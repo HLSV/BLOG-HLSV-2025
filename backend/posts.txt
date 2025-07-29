@@ -1,0 +1,7 @@
+[
+  {
+    "id": 1753769735052,
+    "title": "Proteção Proativa: Como Detectar Ataques de Phishing Antes que Eles Aconteçam",
+    "content": "No cenário atual, ataques de phishing continuam sendo uma das principais ameaças para indivíduos e empresas, mas a proteção não deve ser apenas reativa. A proteção proativa é essencial para detectar e neutralizar tentativas de phishing antes que causem danos.\n\nUma das formas mais eficazes é o uso de soluções baseadas em inteligência artificial que monitoram e analisam padrões suspeitos em e-mails, URLs e mensagens instantâneas. Essas ferramentas conseguem identificar variações sutis em links fraudulentos, padrões de linguagem e comportamento anômalo do remetente.\n\nAlém disso, a educação contínua dos usuários é fundamental. Treinamentos que simulem ataques reais ajudam a criar um ambiente de alerta e reconhecimento rápido de tentativas maliciosas.\n\nPor fim, implementar autenticação multifator (MFA) reduz drasticamente o risco de comprometimento mesmo que um usuário caia em um golpe de phishing, adicionando uma camada extra de segurança que impede o acesso não autorizado.\n\n\n"
+  }
+]

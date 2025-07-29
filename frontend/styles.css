@@ -1,0 +1,103 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+  background: linear-gradient(270deg, #000, #020202, #001f1f);
+  background-size: 600% 600%;
+  animation: bgMove 10s ease infinite;
+  overflow-x: hidden;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Linhas piscando estilo terminal */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 0, 0.05) 0px,
+    rgba(0, 255, 0, 0.05) 2px,
+    transparent 3px,
+    transparent 6px
+  );
+  animation: flicker 1s infinite;
+  z-index: -1;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+/* Blocos flutuantes */
+.floating-block {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(0, 255, 255, 0.6);
+  background: rgba(0, 255, 255, 0.05);
+  animation: floatBlock 10s linear infinite;
+  z-index: -2;
+}
+
+@keyframes floatBlock {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0.2; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+}
+
+/* Faíscas elétricas */
+.spark {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #0ff;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkAnim 1s linear infinite;
+}
+
+@keyframes sparkAnim {
+  0% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+/* Alerta customizado */
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #000;
+  box-shadow: 0 0 20px #0f0, inset 0 0 10px #0f0;
+  color: #0f0;
+  padding: 15px 20px;
+  border: 2px solid #0f0;
+  font-weight: bold;
+  border-radius: 10px;
+  opacity: 0;
+  animation: showAlert 1s forwards;
+  z-index: 2000;
+}
+
+@keyframes showAlert {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tema vermelho no "hackeado" */
+.theme-red {
+  background: #330000 !important;
+  color: #ff4444 !important;
+  transition: background-color 0.5s ease;
+}
