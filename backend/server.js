@@ -1,91 +1,37 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "..", "frontend")));
 
-const POSTS_FILE = path.join(__dirname, "posts.txt");
-const BOLETIM_FILE = path.join(__dirname, "boletim.txt");
-const SESSIONS_FILE = path.join(__dirname, "sessions.txt");
+const postsFile = path.join(__dirname, "posts.txt");
 
-function readJSON(file) {
-  if (!fs.existsSync(file)) return [];
-  try {
-    return JSON.parse(fs.readFileSync(file, "utf8"));
-  } catch {
-    return [];
-  }
-}
+if (!fs.existsSync(postsFile)) fs.writeFileSync(postsFile, "[]");
 
-function writeJSON(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
-}
-
-// 📌 Rota para buscar posts
 app.get("/api/posts", (req, res) => {
-  const posts = readJSON(POSTS_FILE);
-  res.json(posts);
+  const data = fs.readFileSync(postsFile, "utf-8");
+  res.json(JSON.parse(data));
 });
 
-// 📌 Rota para adicionar novo post
 app.post("/api/posts", (req, res) => {
   const { title, content } = req.body;
-  if (!title || !content) {
-    return res.status(400).json({ error: "Título e conteúdo são obrigatórios" });
-  }
+  if (!title || !content) return res.status(400).json({ error: "Campos obrigatórios" });
 
-  const posts = readJSON(POSTS_FILE);
+  const posts = JSON.parse(fs.readFileSync(postsFile, "utf-8"));
   const newPost = { id: Date.now(), title, content };
   posts.push(newPost);
-  writeJSON(POSTS_FILE, posts);
+  fs.writeFileSync(postsFile, JSON.stringify(posts, null, 2));
 
   res.json({ success: true, post: newPost });
 });
 
-// 📌 Rota para buscar boletim
-app.get("/api/boletim", (req, res) => {
-  if (!fs.existsSync(BOLETIM_FILE)) return res.json({ boletim: "" });
-  const boletim = fs.readFileSync(BOLETIM_FILE, "utf8");
-  res.json({ boletim });
-});
-
-// 📌 Rota para atualizar boletim
-app.post("/api/boletim", (req, res) => {
-  const { boletim } = req.body;
-  fs.writeFileSync(BOLETIM_FILE, boletim || "");
-  res.json({ success: true });
-});
-
-// 📌 Rota para gerenciar sessões (usuários online)
-app.post("/api/sessions", (req, res) => {
-  const { sessionId } = req.body;
-  if (!sessionId) return res.json({ online: 0 });
-
-  let sessions = readJSON(SESSIONS_FILE);
-  const now = Date.now();
-
-  // Remove sessões inativas (+10s sem atualização)
-  sessions = sessions.filter((s) => now - s.time < 10000);
-
-  const existing = sessions.find((s) => s.id === sessionId);
-  if (existing) {
-    existing.time = now;
-  } else {
-    sessions.push({ id: sessionId, time: now });
-  }
-
-  writeJSON(SESSIONS_FILE, sessions);
-
-  res.json({ online: sessions.length });
-});
-
-// 📌 Servir frontend
-app.use(express.static(path.join(__dirname, "../frontend")));
-
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Server rodando em http://localhost:${PORT}`);
 });
